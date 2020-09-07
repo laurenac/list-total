@@ -1,0 +1,38 @@
+body, html {
+    box-sizing: border-box;
+}
+
+.container{
+    width: 40%;
+    margin: auto;
+}
+
+.item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    height: 30px;
+    background-color: #2cb1bc;
+    color: white;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 14px 0px;
+}
+
+button:hover {
+    box-shadow: rgba(93, 93, 93, 0.23) 0px 6px 20px;
+    background: #54d1db;
+    cursor: pointer;
+  }
+
+.inactive {
+    color: gray;
+    text-decoration: line-through;
+}
+
+.total{
+    display: flex;
+    justify-content: space-between;
+}

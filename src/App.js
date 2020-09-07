@@ -6,62 +6,77 @@ const exampleList = [
         id: 1,
         label: 'Box',
         value: 3,
-        active: true
     },
     {
         id: 2,
         label: 'Tree',
         value: 4,
-        active: true
     },
     {
         id: 3,
         label: 'House',
         value: 5,
-        active: true
     },
     {
         id: 4,
         label: 'Cat',
         value: 3,
-        active: true
     }
 ];
 
 class App extends React.Component {
     state = {
-        exampleList,
+        deselectedItems: []
     };
 
-    onButtonSelect = (selectedItem, selectedIndex)=> {
-        this.setState((state)=> {
-            const exampleList = state.exampleList.map((item, index) =>{
-                if(index === selectedIndex){
-                    return item.active = !selectedItem.active;
-                } else {
-                    return item;
-                }
-            });
-            return exampleList;
+    onButtonSelect = (selectedItem)=> {
+        
+        this.setState((state)=>{
+
+            let newDeselectedItems = [...state.deselectedItems];
+
+            let index = newDeselectedItems.indexOf(selectedItem.id);
+            if( index === -1){
+                newDeselectedItems.push(selectedItem.id);
+            }
+            if (index > -1) {
+                newDeselectedItems.splice(index, 1);
+            }
+
+            return {deselectedItems: newDeselectedItems}
         });
     }
 
+    
     total = ()=> {
         let payload = 0;
-        this.state.exampleList.map((item)=>{
-            if(item.active) {
-                return payload = payload + item.value;
+        
+        for(let i = 0; i < exampleList.length; i++){
+            if(this.state.deselectedItems.indexOf(exampleList[i].id) === -1){
+                payload = payload + exampleList[i].value;
             }
-            return payload;
-        });
+        }
+        
         return payload; 
     }
     
     render(){
         return (
-            <div>
-                <Item items={this.state} onButtonSelect={this.onButtonSelect}/>
-                {this.total()}
+            <div className="container">
+                {
+                    exampleList.map((item)=> {
+                        return ( 
+                            <Item
+                            key={item.id}
+                            item={item} 
+                            onButtonSelect={this.onButtonSelect}
+                            inactive={this.state.deselectedItems.indexOf(item.id) !== -1}
+                            />
+                        );
+                    })
+                }
+                <hr />
+                <p className="total">Total: <span>{this.total()}</span></p>
              </div>
         );
     }
